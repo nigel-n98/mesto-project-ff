@@ -12,6 +12,6 @@ const presets = [
       // по умолчанию babel использует полифилы библиотеки core-js
       useBuiltIns: "entry"
     }]
-  ];s
+  ];
   
   module.exports = { presets };
