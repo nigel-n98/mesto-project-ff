@@ -10,7 +10,6 @@
 
 .popup {
   font-family: 'Inter', Arial, sans-serif;
-  display: none;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, .5);
@@ -20,4 +19,10 @@
   bottom: 0;
   right: 0;
   z-index: 10;
+  
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
