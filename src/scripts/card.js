@@ -1,28 +1,34 @@
-// Функция для создания карточки
-export function createCard(cardData, deleteCard, cardLikeButton, onOpenImagePopup) {
+export function createCard(cardData, 
+                          deleteCard, 
+                          cardLikeButton, 
+                          openImagePopup, 
+                          popupImage, 
+                          popupImageCaption, 
+                          popupTypeImage, 
+                          openPopup) {
   const cardTemplate = document.querySelector('#card-template').content;
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
   const cardImage = cardElement.querySelector('.card__image');
   const cardTitle = cardElement.querySelector('.card__title');
   const like = cardElement.querySelector('.card__like-button');
-
-  // Обработчик клика по кнопке лайка
-  like.addEventListener('click', cardLikeButton);
+  const cardDeleteButton = cardElement.querySelector('.card__delete-button');
 
   // Устанавливаем данные карточки
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   cardTitle.textContent = cardData.name;
 
-   // Обработчик клика по изображению
-   cardImage.addEventListener('click', function() {
-    onOpenImagePopup(cardData); // передаем данные карточки в колбэк
+  // обработчик на изображение карточки
+  cardImage.addEventListener('click', function() {
+    openImagePopup(cardData, popupImage, popupImageCaption, popupTypeImage, openPopup);
   });
 
-  // Обработчик удаления карточки
-  const cardDeleteButton = cardElement.querySelector('.card__delete-button');
-  cardDeleteButton.addEventListener('click', function() {
-      deleteCard(cardElement);
+  // обработчик на лайк
+  like.addEventListener('click', cardLikeButton);
+
+  // обработчик на удаление
+  cardDeleteButton.addEventListener('click', function () {
+    deleteCard(cardElement);
   });
 
   return cardElement;
@@ -36,4 +42,11 @@ export function cardLikeButton(event) {
 // Функция удаления карточки
 export function deleteCard(cardElement) {
   cardElement.remove();
+}
+
+export function openImagePopup(cardData, popupImage, popupImageCaption, popupTypeImage, openPopup) {
+  popupImage.src = cardData.link;
+  popupImage.alt = cardData.name;
+  popupImageCaption.textContent = cardData.name;
+  openPopup(popupTypeImage);
 }
