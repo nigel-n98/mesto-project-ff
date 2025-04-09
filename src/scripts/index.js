@@ -10,7 +10,7 @@
 import '../pages/index.css';
 import { openPopup, closePopup } from "./modal.js";
 import { initialCards } from "./cards.js"; // Импортируем массив с карточками
-import { createCard, cardLikeButton, deleteCard, openImagePopup } from "./card.js"; // Импортируем функции для работы с карточками
+import { createCard, cardLikeButton, deleteCard } from "./card.js"; // Импортируем функции для работы с карточками
 
 //список изображений
 const cardsContainer = document.querySelector('.places__list');
@@ -18,16 +18,13 @@ const cardsContainer = document.querySelector('.places__list');
 //кнопки 
 const profileEditButton = document.querySelector('.profile__edit-button');
 const profileAddButton = document.querySelector('.profile__add-button');
-// const cardImages = document.querySelectorAll('.card__image');
 const popupCloseButtons = document.querySelectorAll('.popup__close');
 
-//попапы
+//попап
 const popups = document.querySelectorAll('.popup');
-const popupTypeEdit = document.querySelector('.popup_type_edit');
-const popupTypeNewCard = document.querySelector('.popup_type_new-card');
-const popupTypeImage = document.querySelector('.popup_type_image');
 
 //попап редактирования профиля
+const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupInputTypeName = popupTypeEdit.querySelector('.popup__input_type_name');
 const popupInputTypeDescription = popupTypeEdit.querySelector('.popup__input_type_description');
 const formElementEditProfile = popupTypeEdit.querySelector('[name="edit-profile"]');
@@ -35,16 +32,17 @@ const formElementEditProfile = popupTypeEdit.querySelector('[name="edit-profile"
 //попап карточки с изображением и описанием
 const popupImage = document.querySelector('.popup__image');
 const popupImageCaption = document.querySelector('.popup__caption');
+const popupTypeImage = document.querySelector('.popup_type_image');
 
 //профиль
 const profileTitle = document.querySelector('.profile__title');
 const profileDescription = document.querySelector('.profile__description');
 
 //Форма добавления карточек
+const popupTypeNewCard = document.querySelector('.popup_type_new-card');
 const formAddNewCard = popupTypeNewCard.querySelector('[name="new-place"]');
 const popupInputTypeCardName = document.querySelector('.popup__input_type_card-name');
 const popupInputTypeUrl = document.querySelector('.popup__input_type_url');
-
 
 // Функция обработки формы отправки
   function handleProfileEditFormSubmit(event) {
@@ -67,23 +65,24 @@ function addCard(event) {
     const link = popupInputTypeUrl.value;
 
     const cardData = { name, link, alt: name };
-    const cardElement = createCard(cardData, deleteCard, cardLikeButton, openImagePopup, popupImage, popupImageCaption, popupTypeImage, openPopup);
+    const cardElement = createCard(cardData, deleteCard, cardLikeButton, openImagePopup);
 
     cardsContainer.prepend(cardElement);
     closePopup(popupTypeNewCard);
     formAddNewCard.reset();
 }
 
+//Открытие попапа с изображением
+function openImagePopup(cardData) {
+    popupImage.src = cardData.link;
+    popupImage.alt = cardData.name;
+    popupImageCaption.textContent = cardData.name;
+    openPopup(popupTypeImage);
+  }
+
 // стартовые карточки
 initialCards.forEach(cardData => {
-    const cardElement = createCard(cardData, 
-        deleteCard, 
-        cardLikeButton, 
-        openImagePopup, 
-        popupImage, 
-        popupImageCaption, 
-        popupTypeImage, 
-        openPopup);
+    const cardElement = createCard(cardData, deleteCard, cardLikeButton, openImagePopup);
     cardsContainer.appendChild(cardElement);
 })
 
