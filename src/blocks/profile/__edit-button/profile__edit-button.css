@@ -19,6 +19,22 @@
 .profile__edit-button:hover {
   opacity: 0.6;
 }
+/* ошибка в инпуте в edit popup */
+.popup__input-error {
+  color: #ff0000;
+}
+
+/* активация & деактивация кнопки submit в edit popup */
+.popup__button_disabled { 
+  opacity: 0.2;
+  cursor: default;
+  pointer-events: none;
+}
+
+.popup__input.popup__input_type_error {
+  border-bottom: 1px solid red;
+}
+
 
 @media screen and (max-width: 480px) {
   .profile__edit-button {

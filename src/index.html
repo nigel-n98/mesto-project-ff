@@ -17,7 +17,8 @@
     <section class="profile page__section">
       <!-- <div class="profile__image" style="background-image: url('./images/avatar.jpg');"></div> -->
       <div class="profile__image">
-        <img src="<%=require('./images/avatar.jpg')%>" alt="Логотип проекта место" class="profile__image">
+        <img src="<%=require('./images/avatar.jpg')%>" alt="Логотип проекта место" class="profile__avatar">
+        <div class="profile__avatar-edit-icon"></div>
       </div>
       <div class="profile__info">
         <h1 class="profile__title">Жак-Ив Кусто</h1>
@@ -40,9 +41,13 @@
     <div class="popup__content">
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Редактировать профиль</h3>
-      <form class="popup__form" name="edit-profile">
-        <input type="text" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required>
-        <input type="text" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required>
+      <form class="popup__form" name="edit-profile" novalidate>
+        <input type="text" id="name-input" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40" pattern="^[A-Za-zА-Яа-яЁё\s\-]+$" 
+        data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+        <span id="name-input-error" class="popup__input-error"></span>
+        <input type="text" id="description-input" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200" pattern="^[A-Za-zА-Яа-яЁё\s\-]+$" 
+        data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+        <span id="description-input-error" class="popup__input-error"></span>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>
@@ -52,8 +57,10 @@
       <button type="button" class="popup__close"></button>
       <h3 class="popup__title">Новое место</h3>
       <form class="popup__form" name="new-place">
-        <input type="text" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required>
-        <input type="url" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
+        <input type="text" id="place-name-input" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required>
+        <span id="place-name-input-error" class="popup__input-error"></span>
+        <input type="url" id="link-input" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
+        <span id="link-input-error" class="popup__input-error"></span>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>
@@ -65,6 +72,29 @@
       <p class="popup__caption"></p>
     </div>
   </div>
+
+  <div class="popup popup_type_confirm">
+    <div class="popup__content">
+      <h2 class="popup__title">Вы уверены?</h2>
+      <form class="popup__form" name="confirm-delete">
+        <button type="submit" class="popup__button popup__button_type_delete">Да</button>
+      </form>
+      <button type="button" class="popup__close"></button>
+    </div>
+  </div>
+  
+  <div class="popup popup_type_update-avatar">
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Обновить аватар</h3>
+      <form class="popup__form" name="update-avatar" novalidate>
+        <input type="url" id="avatar-link-input" name="avatar" class="popup__input popup__input_type_avatar-link" placeholder="Ссылка на аватар" required>
+        <span id="avatar-link-input-error" class="popup__input-error"></span>
+        <button type="submit" class="button popup__button">Сохранить</button>
+      </form>
+    </div>
+  </div>
+
 </div>
 <script src="./scripts/cards.js" type="module"></script>
 <script src="./scripts/index.js" defer type="module"></script>
@@ -76,7 +106,10 @@
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+      <div class="like__container">
+        <button type="button" class="card__like-button"></button>
+        <span class="card__like-count">0</span>
+      </div>
     </div>
   </li>
 </template>
