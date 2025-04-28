@@ -1,5 +1,10 @@
 export {showInputError, hideInputError, checkInputValidity, toggleButtonState, clearValidation, enableValidation}
 
+const disableSubmitButton = (button, config) => {
+    button.disabled = true;
+    button.classList.add(config.inactiveButtonClass);
+}
+
 // функция показа ошибки в форме
 function showInputError(inputElement, errorMessage, validationConfig) {
     const errorElement = inputElement.closest(validationConfig.formSelector).querySelector(`#${inputElement.id}-error`);
@@ -20,13 +25,15 @@ function hideInputError(inputElement, validationConfig) {
 // функция проверки  на валидность формы в окне редактирования профиля 
 function checkInputValidity(inputElement, validationConfig) {
     const value = inputElement.value.trim();
-    if(!value) {
-        showInputError(inputElement, 'Вы пропустили это поле', validationConfig);
-    } else if(inputElement.validity.patternMismatch) {
-        showInputError(inputElement, 'Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы', validationConfig);
-    } else if(!inputElement.validity.valid){
+
+    if (inputElement.validity.patternMismatch) {
+        // если не соответствует паттерну — берём текст ошибки из data-атрибута
+        showInputError(inputElement, inputElement.dataset.errorMessage, validationConfig);
+    } else if (!inputElement.validity.valid) {
+        // если другое нарушение валидности — используем стандартное сообщение браузера
         showInputError(inputElement, inputElement.validationMessage, validationConfig);
-    } else{
+    } else {
+        // всё хорошо — скрываем ошибку
         hideInputError(inputElement, validationConfig);
     }
 }
@@ -58,8 +65,7 @@ function toggleButtonState(inputs, submitButton, validationConfig) {
         submitButton.disabled = false;
         submitButton.classList.remove(validationConfig.inactiveButtonClass);
     }else{
-        submitButton.disabled = true;
-        submitButton.classList.add(validationConfig.inactiveButtonClass);
+        disableSubmitButton(submitButton, validationConfig);
     }
 }
 
@@ -70,7 +76,7 @@ function clearValidation (form, validationConfig) {
 
     inputs.forEach(function(input){
         hideInputError(input, validationConfig);
-        submitButton.disabled = true;
-        submitButton.classList.add(validationConfig.inactiveButtonClass);
     })    
+
+    disableSubmitButton(submitButton, validationConfig);
 } 

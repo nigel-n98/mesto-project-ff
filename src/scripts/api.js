@@ -1,8 +1,6 @@
 // Токен: 4f87bd4a-fcea-4934-a777-b53620178423
 // Идентификатор группы: wff-cohort-37
 
-export {getCards, getUserInfo, patchProfileEdit, postCardAdd, deleteCardFromServer, likeCard, unlikeCard, patchEditAvatar}
-
 const config = {
     baseUrl: 'https://mesto.nomoreparties.co/v1/wff-cohort-37',
     headers: {
@@ -11,21 +9,19 @@ const config = {
     }
 }
 
+function handleResponse(res) {
+    if (res.ok) {
+        return res.json();
+    }
+    return Promise.reject(res.status);
+}
+
 function getCards () {
     return fetch (`${config.baseUrl}/cards`, {
         headers: config.headers
     })
 
-    .then(function(res){
-        if(res.ok){
-            return res.json();
-        }
-
-        return Promise.reject(res.status);
-    })
-    .catch(function(err){
-        console.log('Ошибка', err);
-    })
+    .then(handleResponse)
 }
 
 function getUserInfo () {
@@ -33,15 +29,7 @@ function getUserInfo () {
         headers: config.headers
     }) 
 
-    .then(function(res){
-        if(res.ok){
-            return res.json();
-        }
-        return Promise.reject(res.status);
-    })
-    .catch(function(err){
-        console.log('Ошибка', err);
-    })
+    .then(handleResponse)
 }
 
 function patchProfileEdit (name, about) {
@@ -53,15 +41,7 @@ function patchProfileEdit (name, about) {
             about: about
         })
     })
-    .then (function(res){
-        if(res.ok) {
-            return res.json();
-        }
-        return Promise.reject(res.status);
-    })
-    .catch(function(err){
-        console.log('Ошибка', err);
-    })
+    .then(handleResponse)
 }
 
 function postCardAdd (name, link) {
@@ -73,16 +53,7 @@ function postCardAdd (name, link) {
             link: link
         })
     })
-    .then(function(res){
-        if(res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(res.status)
-    })
-    .catch(function(err){
-        console.log('Ошибка', err);
-    })
+    .then(handleResponse)
 }
 
 function deleteCardFromServer (cardId) {
@@ -90,17 +61,7 @@ function deleteCardFromServer (cardId) {
         method: "DELETE",
         headers: config.headers
     })
-
-    .then(function (res){
-        if(res.ok){
-            return res.json()
-        }
-        return Promise.reject(res.status);
-    })
-    .catch(function(err){
-        console.log('Ошибка', err);
-    })
-    
+    .then(handleResponse)
 }
 
 function likeCard(cardId) {
@@ -108,15 +69,7 @@ function likeCard(cardId) {
         method: 'PUT',
         headers: config.headers
     })
-    .then(function(res) {
-        if (res.ok) {
-            return res.json();
-        }
-        return Promise.reject(res.status);
-    })
-    .catch(function(err) {
-        console.log('Ошибка', err);
-    });
+    .then(handleResponse)
 }
 
 function unlikeCard(cardId) {
@@ -124,15 +77,7 @@ function unlikeCard(cardId) {
         method: 'DELETE',
         headers: config.headers
     })
-    .then(function(res) {
-        if (res.ok) {
-            return res.json();
-        }
-        return Promise.reject(res.status);
-    })
-    .catch(function(err) {
-        console.log('Ошибка', err);
-    });
+    .then(handleResponse)
 }
 
 function patchEditAvatar(avatar) {
@@ -143,13 +88,7 @@ function patchEditAvatar(avatar) {
         avatar: avatar
       })
     })
-    .then(function(res) {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(res.status);
-    })
-    .catch(function(err) {
-      console.log('Ошибка:', err);
-    });
+    .then(handleResponse)
   }
+
+  export {getCards, getUserInfo, patchProfileEdit, postCardAdd, deleteCardFromServer, likeCard, unlikeCard, patchEditAvatar}

@@ -81,7 +81,7 @@ const validationConfig = {
     const name = popupInputTypeName.value;
     const description = popupInputTypeDescription.value;
 
-    renderLoading('true', popupEditButton);
+    renderLoading(true, popupEditButton);
 
     patchProfileEdit(name, description)
         .then(function (updatedUser) {
@@ -243,10 +243,6 @@ formUpdateAvatar.addEventListener('submit', function(evt){
 });
 
 // Функция отображение предзагрузки "Сохранение"
-function renderLoading(isLoading, buttonElement, defaultText = 'Cохранить') {
-    if(isLoading) {
-        buttonElement.textContent = 'Сохранение...';
-    }else{
-        buttonElement.textContent = defaultText;
-    }
+function renderLoading(isLoading, buttonElement, defaultText = 'Сохранить') {
+    buttonElement.textContent = isLoading ? 'Сохранение...' : defaultText;
 }
